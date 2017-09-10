@@ -1,4 +1,5 @@
 """" utils.py """
+from moviepy.editor import VideoFileClip
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
@@ -79,7 +80,7 @@ def region_of_interest(img, vertices):
     return masked_image
 
 
-def draw_lines(img, lines, color=[0, 0, 255], thickness=2):
+def draw_lines(img, lines, color=[255, 0, 0], thickness=2):
     """
     NOTE: this is the function you might want to use as a starting point once you want to 
     average/extrapolate the line segments you detect to map out the full

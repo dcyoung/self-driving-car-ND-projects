@@ -1,15 +1,16 @@
 """ main.py """
 import argparse
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-import numpy as np
-import utils as utils
 import os
+# import matplotlib.pyplot as plt
+# import matplotlib.image as mpimg
+import numpy as np
+from moviepy.editor import VideoFileClip
+import utils as utils
 
 FLAGS = None
 
 
-def lane_detection_pipelines(img):
+def lane_detection_pipeline(img):
     """ Detect lane lines in an input image.
     Args:
         img: The original unmodified input image.
@@ -48,40 +49,73 @@ def lane_detection_pipelines(img):
     return output
 
 
-def main():
-    """ Main method """
-
+def run_image_test(input_dir, output_dir):
+    """ Performs lane detection on the test images """
     # Create an output dir if necessary
-    if not os.path.exists(FLAGS.output_dir):
-        os.makedirs(FLAGS.output_dir)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
     # Read the input_files into a list
-    filenames = os.listdir(FLAGS.input_dir)
+    filenames = os.listdir(input_dir)
 
     for img_file in filenames:
         # open image
-        input_img = utils.read_image(FLAGS.input_dir + img_file)
+        input_img = utils.read_image(input_dir + img_file)
         # process image
-        output_img = lane_detection_pipelines(input_img)
+        output_img = lane_detection_pipeline(input_img)
         # save the output image
-        utils.write_image(FLAGS.output_dir + img_file, output_img)
+        utils.write_image(output_dir + img_file, output_img)
+
+
+def run_video_test(input_dir, output_dir):
+    """ Performs lane detection on the test videos """
+    # Create an output dir if necessary
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    output_file = output_dir + 'solidWhiteRight.mp4'
+    clip1 = VideoFileClip(input_dir + "solidWhiteRight.mp4").subclip(0, 5)
+    output_clip = clip1.fl_image(lane_detection_pipeline)
+    output_clip.write_videofile(output_file, audio=False)
+
+
+def main():
+    """ Main method """
+
+    run_image_test(FLAGS.input_image_dir, FLAGS.output_image_dir)
+
+    run_video_test(FLAGS.input_video_dir, FLAGS.output_video_dir)
 
 
 if __name__ == '__main__':
     PARSER = argparse.ArgumentParser()
 
     PARSER.add_argument(
-        '--input_dir', '-i',
+        '--input_image_dir',
         type=str,
         default="./test_images/",
-        help='Directory to read input files.'
+        help='Directory to read input images.'
     )
 
     PARSER.add_argument(
-        '--output_dir', '-o',
+        '--output_image_dir',
         type=str,
         default="./test_images_output/",
-        help='Directory to write output files.'
+        help='Directory to write output images.'
+    )
+
+    PARSER.add_argument(
+        '--input_video_dir',
+        type=str,
+        default="./test_videos/",
+        help='Directory to read input videos.'
+    )
+
+    PARSER.add_argument(
+        '--output_video_dir', '-o',
+        type=str,
+        default="./test_video_output/",
+        help='Directory to write output videos.'
     )
     PARSER.add_argument(
         '--float_arg',
