@@ -8,24 +8,30 @@ import math
 import elementary_line_segment as esl
 
 
-def read_image(filepath):
+def read_image(filepath, bReadWithOpenCV=False):
     """ Reads an image from a file
     Args:
         The path to the image file
     Returns:
         image
     """
-    # return cv2.imread(filepath)
+    if bReadWithOpenCV:
+        return cv2.imread(filepath)
     return mpimg.imread(filepath)
 
 
-def write_image(filepath, img):
+def write_image(filepath, img, BGR=False):
     """ Writes an image to a file
     Args:
         filepath: Where to write the image
         img: The image to write
     """
-    cv2.imwrite(filepath, img)
+
+    if BGR:
+        rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        cv2.imwrite(filepath, rgb)
+    else:
+        cv2.imwrite(filepath, img)
 
 
 def blank_img(img):

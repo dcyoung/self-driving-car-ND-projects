@@ -1,4 +1,5 @@
 MANIFEST
+test_video_output/*
 build
 dist
 _build

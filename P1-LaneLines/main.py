@@ -24,8 +24,7 @@ def lane_detection_pipeline(img):
     yellow_mask = utils.color_threshold(
         img, rgb_min=[150, 150, 0], rgb_max=[255, 255, 165])
     color_mask = white_mask & yellow_mask
-    yellow_white = utils.boolean_mask(img, color_mask)
-    # utils.write_image("./test_images_output/hahaha.jpg", yellow_white)
+    # yellow_white = utils.boolean_mask(img, color_mask)
 
     # convert image to gray scale
     gray = utils.grayscale(img)
@@ -56,8 +55,6 @@ def lane_detection_pipeline(img):
 
     # Overlay the detected lines on the original img
     output = utils.weighted_img(detected_lines, img)
-    # output = utils.weighted_img(detected_lines, masked)
-    # output = utils.weighted_img(detected_lines, yellow_white)
 
     return output
 
@@ -77,7 +74,7 @@ def run_image_test(input_dir, output_dir):
         # process image
         output_img = lane_detection_pipeline(input_img)
         # save the output image
-        utils.write_image(output_dir + img_file, output_img)
+        utils.write_image(output_dir + img_file, output_img, BGR=True)
 
 
 def run_video_test(input_dir, output_dir):
@@ -92,7 +89,7 @@ def run_video_test(input_dir, output_dir):
     for video_file in filenames:
         output_file = output_dir + video_file
         input_file = input_dir + video_file
-        # clip1 = VideoFileClip(input_dir + "solidWhiteRight.mp4").subclip(0, 5)
+        # clip1 = VideoFileClip(input_file).subclip(0, 5)
         clip1 = VideoFileClip(input_file)
         output_clip = clip1.fl_image(lane_detection_pipeline)
         output_clip.write_videofile(output_file, audio=False)
@@ -102,7 +99,6 @@ def run_video_test(input_dir, output_dir):
 
 def main():
     """ Main method """
-
     run_image_test(FLAGS.input_image_dir, FLAGS.output_image_dir)
 
     run_video_test(FLAGS.input_video_dir, FLAGS.output_video_dir)
@@ -137,18 +133,6 @@ if __name__ == '__main__':
         type=str,
         default="./test_video_output/",
         help='Directory to write output videos.'
-    )
-    PARSER.add_argument(
-        '--float_arg',
-        type=float,
-        default=0.5,
-        help='Help message.'
-    )
-    PARSER.add_argument(
-        '--int_arg',
-        type=int,
-        default=1,
-        help='Help message.'
     )
 
     FLAGS, _ = PARSER.parse_known_args()
