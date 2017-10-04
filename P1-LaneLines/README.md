@@ -27,7 +27,7 @@ The following flags are available:
 | `input_image_dir` | Where the program will look for input images.   | `./test_images/`|
 | `input_video_dir` | Where the program will look for input videos.   | `./test_videos/`|
 | `output_image_dir` | Where the program will write output images.   | `./test_images_output/`|
-| `output_video_dir` | Where the program will write output videos.   | `./test_videos_output/`|
+| `output_video_dir` | Where the program will write output videos.   | `./test_video_output/`|
 
 For example:
 ```bash
