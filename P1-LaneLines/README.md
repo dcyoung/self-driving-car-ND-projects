@@ -21,6 +21,7 @@ However, the code has been written in more organized python modules, meaning you
 python main.py
 ```
 The following flags are available:
+
 | Flag | Function | Default |
 |:----:|-------|:----:|
 | `input_image_dir` | Where the program will look for input images.   | `./test_images/`|
